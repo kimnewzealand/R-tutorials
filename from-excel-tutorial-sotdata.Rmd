@@ -1,16 +1,15 @@
 ---
-title: "Pivot Tables and other Excel tasks you can also do in R with Summer of Tech event data"
+title: "Tutorial on Pivot Tables and other Excel tasks you can also do in R with Summer of Tech event data"
+author: "Kim Fitter"
 output: 
   html_document: 
     toc: true
     toc_float: true
 ---
 
-Run each line of code yourself or Knit to HTML to walk through this tutorial.
+This tutorial assuming you have already installed R and R studio and had a brief introduction to the R basics. Run each line of code yourself or Knit to HTML to walk through this tutorial.
 
-The dataset used in this exercise is Summer of Tech 2017 event details. 
-
-At the end of the exercise we will have an interactive tabular view of the venue capacity relative to the student registration and attendance numbers.
+At the end of the exercise we will have an interactive tabular view of the event venue capacity relative to the student registration and attendance numbers.
 
 ```{r setup, include=FALSE}
 # This is the setup chunk, we are using echo=TRUE so that the code is included in the R Markdown document
@@ -20,21 +19,27 @@ knitr::opts_chunk$set(cache = TRUE, echo = TRUE)
 ## Particularly useful packages for this exercise
 
 ```{r install.packages}
-# Install the package the first time you use the packages
+# Install the package the first time you use the package
 # install.packages("tidyverse")
 # install.packages("rpivotTable")
 library(tidyverse)
 library(rpivotTable)
 ```
 
+## About Summer of Tech
+
+[Summer of Tech](https://summeroftech.co.nz/) (SoT) is a non-profit organisation in New Zealand that connects employers with students and graduates for paid work experience and graduate jobs. Students create a profile to register interest in a number of available summer interships. The students then attend skills and recruitment events, and SoT facilitates the whole process to job offers and securing these internships.
+
 ## Import Event data
+
+The dataset used in this tutorial is Summer of Tech 2017 event details. 
 
 First import the data using the read_csv function from the [readr](https://cran.r-project.org/web/packages/readr/index.html R package) which is loaded with the tidyverse, to import the raw data to a dataframe called **eventdat**.
 
 This function will import to a data frame, which is a 2-dimensional object where contents can be different types, as default.
 
 ```{r download data}
-# Import the "2017 event detail report.csv" 
+# Import the "2017 event detail report.csv" which is the "Raw" link from the GitHub link https://github.com/R-LadiesAKL/sotdata/blob/master/2017%20event%20detail%20report.csv
 url <- "https://raw.githubusercontent.com/R-LadiesAKL/sotdata/master/2017%20event%20detail%20report.csv"
 # The read_csv function also produces default messages describing the parsing of columns which is converting the columns into different types.
 eventdat <- read_csv(url)
@@ -71,7 +76,7 @@ In Excel we can format "cells". Which functions can we use in R?
 
 A tool for data frame data manipulation is the  [dplyr](https://cran.r-project.org/web/packages/dplyr/index.html) R package. R packages typically have vignettes which are tutorials and worked examples using the package. There is useful documentation in the [Introduction to dplyr](https://cran.r-project.org/web/packages/dplyr/vignettes/dplyr.html).
 
-In order to access the variables we can use a **$**. Alternatively we can use another method that joins objects and functions using a pipe **%>%**. This can be useful if we would like to use multiple functions on an object. 
+In order to access the variables we can use a **$**. Alternatively we can use another method that joins objects and functions using a pipe **%>%**. This can be useful if we would like to use multiple dplyr verbs and functions on an object. 
 
 ```{r format}
 # Use dplyr to rename a variable
@@ -160,7 +165,7 @@ eventdat %>%
 
 In Excel you can create pivot tables. Which functions can we use in R?
 
-R packages typically have vignettes which are tutorials and worked examples using the package. Have a look at this package's [vignette](https://cran.r-project.org/web/packages/rpivotTable/vignettes/rpivotTableIntroduction.html).
+A neat R package that creates interactive pivot tables is [rpivotTable](https://cran.r-project.org/web/packages/rpivotTable/).   Have a look at this package's [vignette](https://cran.r-project.org/web/packages/rpivotTable/vignettes/rpivotTableIntroduction.html).
 
 We will use the rpivotTable function and add arguments to specify how we would like the pivot table to look. We will use the event **Type** as a row and **Location** as Column, with a sum of the **Extra.seats**. The type of graphic will be a heatmap.
 
@@ -169,7 +174,7 @@ We will use the rpivotTable function and add arguments to specify how we would l
 rpivotTable(eventdat,rows=c("Type"),cols=c("Location"), aggregator="Sum", vals="Extra.seats", rendererName = "Heatmap")
 ```
   
-In the heatmap object we can filter the **Location** and even add the **Event.name** as a row to see which specific events we over or under **Capacity**. We can also change the value to the other numeric variables.
+In the heatmap object we can filter the **Location** and even add the **Event.name** as a row to see which specific events we over or under **Capacity**. We can also change the summation variable to one of the other numeric variables.
 
 ## Save the "spreadsheet"
 
@@ -190,6 +195,6 @@ write_csv(eventdat,"eventdat.csv")
 
 ***  
 
-
+## Acknowledgments
   
 Thanks to Marcia Ferreira @DrMarciaFe and Chris Beltz @BeltzEcology for reviewing and providing feedback on this tutorial.

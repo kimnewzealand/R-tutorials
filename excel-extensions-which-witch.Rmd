@@ -1,29 +1,25 @@
 ---
-title: "Witch Trials Pivot Tables and other Excel tasks you can also do in R"
+title: "Tutorial on Pivot Tables and other Excel tasks you can also do in R - Witch Trials"
+author: "Kim Fitter"
 output: 
   html_document: 
     toc: true
     toc_float: true
 ---
 
-Which witches and other Excel tasks.....in R. 
-
-Run each line of code yourself or Knit to HTML to walk through this tutorial.
-
-The dataset used in this exercise is of 43,000 people tried for witchcraft across
-21 European countries over a period of five-and-a-half centuries used for this [economic journal](https://www.researchgate.net/publication/315533575_Witch_Trials) . 
+Which witches and other Excel tasks.....in R. This tutorial assuming you have already installed R and R studio and had a brief introduction to the R basics. Run each line of code yourself or Knit to HTML to walk through this tutorial.
 
 At the end of the exercise we will have an interactive tabular view of the number of witches tried by country.
 
 ```{r setup, include=FALSE}
-# This is the setup chunk, we are using echo=TRUE so that the code is included in the R Markdown document
+# This is a comment on the setup chunk, we are using echo=TRUE so that the code is included in the R Markdown document
 knitr::opts_chunk$set(cache = TRUE, echo = TRUE)
 ```
 
 ## Particularly useful packages for this exercise
 
 ```{r install.packages}
-# Install the package the first time you use the packages
+# Install the package the first time you use the package
 # install.packages("tidyverse")
 # install.packages("rpivotTable")
 library(tidyverse)
@@ -32,7 +28,10 @@ library(rpivotTable)
 
 ## Import Witch Trial data
 
-First import the data using the read_csv function from the [readr](https://cran.r-project.org/web/packages/readr/index.html R package) which is loaded with the tidyverse, to import the raw data to a dataframe called **witchdat**.
+The dataset used in this tutorial is of 43,000 people tried for witchcraft across
+21 European countries over a period of five-and-a-half centuries used for this [economic journal](https://www.researchgate.net/publication/315533575_Witch_Trials). 
+
+First import the data using the read_csv function from the [readr](https://cran.r-project.org/web/packages/readr/index.html) R package which is loaded with the tidyverse, to import the raw data to a dataframe called **witchdat**.
 
 This function will import to a data frame, which is a 2-dimensional object where contents can be different types, as default.
 
@@ -64,7 +63,7 @@ str(witchdat, give.attr=FALSE)
 # Next we will use structure function to view witchdat 
 structure(witchdat)
 ```
-It looks like there are character variables and numeric variables.
+It looks like there are character variables and integer variables.
 
 ##  Format "cells" in R
 
@@ -72,7 +71,7 @@ In Excel we can format "cells". Which functions can we use in R?
 
 A tool for data frame data manipulation is the  [dplyr](https://cran.r-project.org/web/packages/dplyr/index.html) R package. R packages typically have vignettes which are tutorials and worked examples using the package. There is useful documentation in the [Introduction to dplyr](https://cran.r-project.org/web/packages/dplyr/vignettes/dplyr.html).
 
-In order to access the variables we can use a **$**. Alternatively we can use another method that joins objects and functions using a pipe **%>%**. This can be useful if we would like to use multiple functions on an object.
+In order to access the variables we can use a **$**. Alternatively we can use another method that joins objects and functions using a pipe **%>%**. This can be useful if we would like to use multiple dplyr verbs or functions on an object.
 
 ```{r format}
 # Use dplyr to rename a variable
@@ -81,7 +80,7 @@ witchdat <- witchdat %>%
 # Perform data type conversion of the deaths variable - use dplyr mutate to change 1 variable
 witchdat <- witchdat %>% 
   mutate(deaths=as.numeric(deaths))
-# or we can use dplyr mutate_all to change types of all integer variables
+# or we can use dplyr mutate_all to change types of all integer variables to numeric
 witchdat <- witchdat %>% 
   mutate_if(is.integer,as.numeric)
 # View the structure of witchdat again to see these formatting changes
@@ -153,7 +152,7 @@ witchdat %>%
 
 In Excel you can create pivot tables. Which functions can we use in R?
 
-A neat package that creates interactive pivot tables is [rpivotTable]((https://cran.r-project.org/web/packages/rpivotTable/).   Have a look at this package's [vignette](https://cran.r-project.org/web/packages/rpivotTable/vignettes/rpivotTableIntroduction.html).
+A neat R package that creates interactive pivot tables is [rpivotTable](https://cran.r-project.org/web/packages/rpivotTable/).   Have a look at this package's [vignette](https://cran.r-project.org/web/packages/rpivotTable/vignettes/rpivotTableIntroduction.html).
 
 ```{r pivot}
 # Create an interactive pivot table using the rpivotTable function and package
@@ -181,6 +180,7 @@ write_csv(witchdat,"witchdat.csv")
   
 ***  
 
+## Acknowledgments
 
   
 Thanks to Marcia Ferreira @DrMarciaFe and Chris Beltz @BeltzEcology for reviewing and providing feedback on this tutorial.
