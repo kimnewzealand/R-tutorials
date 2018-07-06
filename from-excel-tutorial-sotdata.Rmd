@@ -18,13 +18,14 @@ knitr::opts_chunk$set(cache = TRUE, echo = TRUE)
 
 ## Particularly useful packages for this exercise
 
-```{r install.packages}
-# Install the package the first time you use the package
-# install.packages("tidyverse")
-# install.packages("rpivotTable")
+```{r load packages}
+# Load packages
 library(tidyverse)
 library(rpivotTable)
 ```
+
+**Tip: ** Install the package from CRAN the first time you use the package using install.packages("packagenamehere") else you would get an Error that there is no package.
+
 
 ## About Summer of Tech
 
@@ -36,7 +37,7 @@ The dataset used in this tutorial is Summer of Tech 2017 event details.
 
 First import the data using the read_csv function from the [readr](https://cran.r-project.org/web/packages/readr/index.html R package) which is loaded with the tidyverse, to import the raw data to a dataframe called **eventdat**.
 
-This function will import to a data frame, which is a 2-dimensional object where contents can be different types, as default.
+This function will import to a data frame, which is a 2-dimensional object where contents can be different data types, as default.
 
 ```{r download data}
 # Import the "2017 event detail report.csv" which is the "Raw" link from the GitHub link https://github.com/R-LadiesAKL/sotdata/blob/master/2017%20event%20detail%20report.csv
@@ -54,18 +55,18 @@ In R there are some packages that are included by default; take a look at the pa
 dim(eventdat)
 ```
 
-This is a fairly small dataframe!
-
 Another included package is [utils](https://cran.r-project.org/web/packages/R.utils/index.html) R package which includes the str and structure functions to view the basic structure. 
 
 ```{r structure}
 # Use str function to 'Compactly Display the Structure of an Arbitrary R Object'. All R objects store additional attributes to store metadata about an object. In this str function we set the give.attr to FALSE to exclude these attributes.
 str(eventdat, give.attr=FALSE)
-# Try running the command without the parameter...
-# str(witchdat)
 # Next we will use structure function to view witchdat 
 structure(eventdat)
+# There are other ways of looking at your data. Try the glimpse function from the tibble package. Take a look at the help description with ?glimpse to find out more
+glimpse(eventdat)
 ```
+
+This is a fairly small dataframe!
 
 It looks like there are character variables, data/time variables and numeric variables.
 **Name** appears to be the specific event name and a subset of the event **Type**.
@@ -76,16 +77,16 @@ In Excel we can format "cells". Which functions can we use in R?
 
 A tool for data frame data manipulation is the  [dplyr](https://cran.r-project.org/web/packages/dplyr/index.html) R package. R packages typically have vignettes which are tutorials and worked examples using the package. There is useful documentation in the [Introduction to dplyr](https://cran.r-project.org/web/packages/dplyr/vignettes/dplyr.html).
 
-In order to access the variables we can use a **$**. Alternatively we can use another method that joins objects and functions using a pipe **%>%**. This can be useful if we would like to use multiple dplyr verbs and functions on an object. 
+In order to access the variables we can use a **$**. Alternatively we can use another method that joins objects and functions using a pipe or **%>%**. This can be useful if we would like to use multiple dplyr verbs and functions on an object. 
 
 ```{r format}
-# Use dplyr to rename a variable
+# Use dplyr to rename the Name variable to Event.name
 eventdat <- eventdat %>% 
   rename(Event.name=Name)
 # Perform data type conversion of the deaths variable - use dplyr mutate to change 1 variable
 eventdat <- eventdat %>% 
   mutate(Capacity=as.numeric(Capacity))
-# or we can use dplyr mutate_if to change all integer variables to numeric variables
+# or we can use dplyr mutate_if to change all integer variables (is.integer) to numeric variables (as.numeric). With mutate_if we don't need the () with is.integer and as.numeric functions as mutate_if will operate on all the columns for which the first test function is TRUE.
 eventdat <- eventdat %>% 
   mutate_if(is.integer,as.numeric)
 ```
@@ -100,10 +101,10 @@ names(eventdat)
 #  We will use the make.names base R function to make syntactically valid names of the column variables for further analysis and output in R Markdown. For these names, it adds a "." to the spaces in the names
 names(eventdat) <- make.names(names(eventdat))
 # View the structure of eventdat again to see these formatting changes
-str(eventdat, give.attr=FALSE)
+glimpse(eventdat)
 ```
 
-For other formatting we can also format the end products (such as plots) that we create, using the functions in those R packages.
+For other formatting we can also format the end products (such as plots), using the functions available in those R packages.
 
 ##  "Sort" data in R
 
