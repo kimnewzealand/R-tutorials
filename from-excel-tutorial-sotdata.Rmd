@@ -1,5 +1,5 @@
 ---
-title: "Tutorial on Pivot Tables and other Excel tasks you can also do in R with Summer of Tech event data"
+title: "Tutorial on Pivot Tables and other Excel things you can also do in R with Summer of Tech event data"
 author: "Kim Fitter"
 output: 
   html_document: 
@@ -7,9 +7,16 @@ output:
     toc_float: true
 ---
 
-This tutorial assuming you have already installed R and R studio and had a brief introduction to the R basics. Run each line of code yourself or Knit to HTML to walk through this tutorial.
+## Introduction
 
-At the end of the exercise we will have an interactive tabular view of the event venue capacity relative to the student registration and attendance numbers.
+This tutorial is aimed at those with a background in Excel, who would also like to use R for data analysis. This tutorial compares the things you would normally do in Excel, but done in R.
+
+This introductory level tutorial assumes you have already installed R and R studio and had a brief introduction to the R basics and R Markdown. 
+
+The dataset used is a real dataset of events run by a local non-profit Summer of Tech.
+
+Run each line of code (Ctrl + Enter) or code chunk (Ctrl + Shift +Enter) yourself or Knit -> Knit to HTML to read through the HTML version.
+
 
 ```{r setup, include=FALSE}
 # This is the setup chunk, we are using echo=TRUE so that the code is included in the R Markdown document
@@ -24,20 +31,22 @@ library(tidyverse)
 library(rpivotTable)
 ```
 
-**Tip: ** Install the package from CRAN the first time you use the package using install.packages("packagenamehere") else you would get an Error that there is no package.
+**Tip** Install the package from CRAN the first time you use the package using  `install.packages("name of package")` else you will get an `Error` that there is no package.
+
+**Tip** The latest package version is sometimes available from GitHub so alternatively install from GitHub using the `devtools` package. A package's GitHub README file typically has installation instructions.
 
 
 ## About Summer of Tech
 
-[Summer of Tech](https://summeroftech.co.nz/) (SoT) is a non-profit organisation in New Zealand that connects employers with students and graduates for paid work experience and graduate jobs. Students create a profile to register interest in a number of available summer interships. The students then attend skills and recruitment events, and SoT facilitates the whole process to job offers and securing these internships.
+[Summer of Tech](https://summeroftech.co.nz/) (SoT) is a non-profit organisation in New Zealand that connects employers with students and graduates for paid work experience and graduate jobs. Students create a profile to register interest in a number of available summer internships. The students then attend skills and recruitment events, and SoT facilitates the whole process to job offers and securing these internships.
 
 ## Import Event data
 
 The dataset used in this tutorial is Summer of Tech 2017 event details. 
 
-First import the data using the read_csv function from the [readr](https://cran.r-project.org/web/packages/readr/index.html R package) which is loaded with the tidyverse, to import the raw data to a dataframe called **eventdat**.
+First import the data using the read_csv function from the [readr](https://cran.r-project.org/web/packages/readr/index.html R package)   R package which is loaded with the tidyverse, to import the raw data to a data frame called `eventdat`.
 
-This function will import to a data frame, which is a 2-dimensional object where contents can be different data types, as default.
+A data frame is a 2-dimensional object where contents can be different data types.
 
 ```{r download data}
 # Import the "2017 event detail report.csv" which is the "Raw" link from the GitHub link https://github.com/R-LadiesAKL/sotdata/blob/master/2017%20event%20detail%20report.csv
@@ -46,44 +55,52 @@ url <- "https://raw.githubusercontent.com/R-LadiesAKL/sotdata/master/2017%20even
 eventdat <- read_csv(url)
 ```
 
-Let's take a quick look at the **eventdat** data frame. 
+Let's take a quick look at the `eventdat` data frame to get an idea of it's size and contents. 
 
-In R there are some packages that are included by default; take a look at the packages available in the Global Environment drop down. One such package is called package is [base](https://stat.ethz.ch/R-manual/R-devel/library/base/html/00Index.html) which includes dim function to retrieve the dimensions, the row and column numbers.
+In R there are some packages that are included by default; take a look at the packages available in the Global Environment drop down. One such package is called [base](https://stat.ethz.ch/R-manual/R-devel/library/base/html/00Index.html) which includes the `dim` function to retrieve the dimensions on the object: the row and column numbers.
 
 ```{r dim}
 # Retrieve the number of rows and columns
 dim(eventdat)
 ```
 
-Another included package is [utils](https://cran.r-project.org/web/packages/R.utils/index.html) R package which includes the str and structure functions to view the basic structure. 
+Another included package is [utils](https://cran.r-project.org/web/packages/R.utils/index.html) R package which includes the `str` and `structure` functions to view the basic structure. 
 
 ```{r structure}
 # Use str function to 'Compactly Display the Structure of an Arbitrary R Object'. All R objects store additional attributes to store metadata about an object. In this str function we set the give.attr to FALSE to exclude these attributes.
 str(eventdat, give.attr=FALSE)
 # Next we will use structure function to view witchdat 
 structure(eventdat)
-# There are other ways of looking at your data. Try the glimpse function from the tibble package. Take a look at the help description with ?glimpse to find out more
+# There are other ways of looking at your data. Try the glimpse function from the tibble package. Take a look at the Help description with ?glimpse to find out more
 glimpse(eventdat)
 ```
 
-This is a fairly small dataframe!
-
-It looks like there are character variables, data/time variables and numeric variables.
-**Name** appears to be the specific event name and a subset of the event **Type**.
+This is a fairly small data frame with character, data/time, numeric columns. `Name` also appears to be the specific event name and a subset of the event `Type`.
 
 ##  Format "cells" in R
 
-In Excel we can format "cells". Which functions can we use in R?
+*In Excel we can format "cells". Which functions can we use in R?*
 
+From now on we will refer to the columns as variables, with column headers as the variable names.
+
+First we will look at the format of the variable names. 
+
+```{r make names}
+# Take a look at the column or variable names
+names(eventdat)
+#  We will use the make.names base R function to make syntactically valid names of the column variables for further analysis and output in R Markdown. For these names, it adds a "." to the spaces in the names
+names(eventdat) <- make.names(names(eventdat))
+```
+  
 A tool for data frame data manipulation is the  [dplyr](https://cran.r-project.org/web/packages/dplyr/index.html) R package. R packages typically have vignettes which are tutorials and worked examples using the package. There is useful documentation in the [Introduction to dplyr](https://cran.r-project.org/web/packages/dplyr/vignettes/dplyr.html).
 
-In order to access the variables we can use a **$**. Alternatively we can use another method that joins objects and functions using a pipe or **%>%**. This can be useful if we would like to use multiple dplyr verbs and functions on an object. 
+In order to access the contents of the columns we can use a `$` for example `eventdat$Name`. Alternatively we can use another method that joins objects and functions using a pipe or `%>%`. This can be useful if we would like to use multiple `dplyr` verbs and functions on an object. 
 
 ```{r format}
 # Use dplyr to rename the Name variable to Event.name
 eventdat <- eventdat %>% 
   rename(Event.name=Name)
-# Perform data type conversion of the deaths variable - use dplyr mutate to change 1 variable
+# Perform data type conversion of the deaths variable - use dplyr mutate to change this variable
 eventdat <- eventdat %>% 
   mutate(Capacity=as.numeric(Capacity))
 # or we can use dplyr mutate_if to change all integer variables (is.integer) to numeric variables (as.numeric). With mutate_if we don't need the () with is.integer and as.numeric functions as mutate_if will operate on all the columns for which the first test function is TRUE.
@@ -91,15 +108,9 @@ eventdat <- eventdat %>%
   mutate_if(is.integer,as.numeric)
 ```
 
-Try typing 'as.' in the console to see what other function options are available to change formats.
+Try typing 'as.' in the Console to see what other function options are available to change formats.
 
-Next we will look at the formatting of the variable names. 
-
-```{r make names}
-# Take a look at the column or variable names
-names(eventdat)
-#  We will use the make.names base R function to make syntactically valid names of the column variables for further analysis and output in R Markdown. For these names, it adds a "." to the spaces in the names
-names(eventdat) <- make.names(names(eventdat))
+```{r formatting changes structure}
 # View the structure of eventdat again to see these formatting changes
 glimpse(eventdat)
 ```
@@ -108,7 +119,9 @@ For other formatting we can also format the end products (such as plots), using 
 
 ##  "Sort" data in R
 
-In Excel we can sort by columns. Which functions can we use in R?
+*In Excel we can sort by columns. Which functions can we use in R?*
+
+R is different to Excel that we can also view data manipulations without assigning changes to an object. In these sorting examples we will just view the changes in-line.
 
 ```{r arrange}
 # Sort by character using arrange from dplyr. We can also pipe other packages functions such as head from the utils package.
@@ -127,10 +140,12 @@ eventdat %>%
 
 ##  Create a "formula" in R
 
-In Excel we can create formulas in cells. Which functions can we use in R?
+*In Excel we can create formulas in cells. Which functions can we use in R?*
+
+Remember R as a calculator? We can create a simple formula in R such as `3+2` but we can also create formula on parts or whole columns or cells as most R functions are vectorised. This is the same concept as filled cells in Excel.
 
 ```{r formula}
-# Create a new variable in our dataframe with mutate function from dplyr. 
+# Create a new variable in our dataframe called Extra.seats as the difference between two variables (formula after the =). Use the mutate function from dplyr
 eventdat <- eventdat %>% 
   mutate(Extra.seats = Capacity - Number.registered)
 # Take a look at the new variable and arrange in descending order
@@ -141,10 +156,10 @@ eventdat %>%
 
 ##  Filter a "column"
 
-In Excel we can filter by columns. Which functions can we use in R?
+*In Excel we can filter by columns. Which functions can we use in R?*
 
 ```{r filter}
-# Filter 100 Capacity events  by using dplyr filter. Remember to use == for equals in R, whereas = is an assignment in R.
+# Filter 100 Capacity events  by using dplyr filter. Remember to use == for equals in R, whereas = is an assignment operator in R functions.
 eventdat %>% 
   filter(Capacity==100) %>% 
   head()
@@ -152,40 +167,50 @@ eventdat %>%
 
 ##  Calculate on "columns"
 
-In Excel we can add a calculation such as sum or a mean to a column. Which functions can we use in R?
+*In Excel we can add a calculation such as sum or a mean to a column. Which functions can we use in R?*
+
+In R Markdown documents we can "highlight" and comment on insights, calculations or data manipulations.
 
 ```{r calculation}
-# Sum the total events. Using sum on the column deaths is intuitively the same way of calculating this sum in Excel total event attendances 
+# Sum the total events. Use sum on the 'whole column' ie variable eventdat$Number.checked.in is intuitively the same way of calculating this sum in Excel 
 sum(eventdat$Number.checked.in)
-# Now try the dplyr summarise function
+# Now use dplyr with the select function to select the deaths variable (also the same as deleting the other columns in Excel) then apply the sum on this object
+eventdat %>% 
+  select(Number.checked.in) %>% 
+  sum()
+# Now try the dplyr summarise function and sum function then name this sum object sum_event
 eventdat %>% 
   summarise(sum_event = sum(Number.checked.in))
 ```
 
 ##  Create a "Pivot Table"
 
-In Excel you can create pivot tables. Which functions can we use in R?
+*In Excel you can create pivot tables. Which functions can we use in R?*
 
-A neat R package that creates interactive pivot tables is [rpivotTable](https://cran.r-project.org/web/packages/rpivotTable/).   Have a look at this package's [vignette](https://cran.r-project.org/web/packages/rpivotTable/vignettes/rpivotTableIntroduction.html).
+A neat R package that creates interactive pivot tables is [rpivotTable](https://cran.r-project.org/web/packages/rpivotTable/).   Have a look at this package's [introduction vignette](https://cran.r-project.org/web/packages/rpivotTable/vignettes/rpivotTableIntroduction.html).
 
-We will use the rpivotTable function and add arguments to specify how we would like the pivot table to look. We will use the event **Type** as a row and **Location** as Column, with a sum of the **Extra.seats**. The type of graphic will be a heatmap.
+We will use the `rpivotTable` function and add arguments to specify how we would like the pivot table to look. We will use the event `Type` as a row and `Location` as Column, with a sum of the `Extra.seats`. The type of graphic will be a heatmap.
 
 ```{r pivot}
 # Create an interactive pivot table heatmap using the rpivotTable function and package
 rpivotTable(eventdat,rows=c("Type"),cols=c("Location"), aggregator="Sum", vals="Extra.seats", rendererName = "Heatmap")
 ```
   
-In the heatmap object we can filter the **Location** and even add the **Event.name** as a row to see which specific events we over or under **Capacity**. We can also change the summation variable to one of the other numeric variables.
+In the heatmap object we can filter the `Location` and even add the `Event.name` as a row to see which specific events we over or under`Capacity`. We can also change the summation variable to one of the other numeric variables.
+
+**Challenge 1** Can you recreate the pivot table as a new R data frame using `dplyr` functions? (Hint ?group_by)
+
+**Challenge 2** On the pivot table widget move the country above the table so the `country` is a pivot table column. Can you extend your challenge 1 answer with `dplyr`  to recreate.
 
 ## Save the "spreadsheet"
 
-In Excel you can save your workbooks and spreadsheets. Which functions can we use in R?
+*In Excel you can save your workbooks and spreadsheets. Which functions can we use in R?*
 
 Here are some options in R, depending on what output is needed:  
 
-- The base R write.csv function to write to a csv file  
-- The readr package in the tidyverse, includes the function write_csv, which is faster than write.csv  
-- The xlsx package write.xlsx to write to an Excel workbook  
+- The `base` R `write.csv` function to write to a csv file  
+- The `readr` package in the tidyverse, includes the function `write_csv`, which is faster than write.csv  
+- The `xlsx` package `write.xlsx` to write to an Excel workbook  
 
 
 ```{r save}
@@ -198,4 +223,6 @@ write_csv(eventdat,"eventdat.csv")
 
 ## Acknowledgments
   
-Thanks to Marcia Ferreira @DrMarciaFe and Chris Beltz @BeltzEcology for reviewing and providing feedback on this tutorial.
+
+  
+Thanks to Marcia Ferreira @DrMarciaFe, Chris Beltz @BeltzEcology, Duncan Garmonsway @nacnudus and Ivan Leung @urganmax for reviewing and providing suggesions on this tutorial through Twitter.
