@@ -187,6 +187,15 @@ eventdat %>%
 
 *In Excel you can create pivot tables. Which functions can we use in R?*
 
+In R we can use the table function to create a simple pivot table.
+
+```{r table}
+# Use th table function to find a simple count by country
+eventdat %>% 
+  select(Location) %>% 
+      table()
+```
+
 A neat R package that creates interactive pivot tables is [rpivotTable](https://cran.r-project.org/web/packages/rpivotTable/).   Have a look at this package's [introduction vignette](https://cran.r-project.org/web/packages/rpivotTable/vignettes/rpivotTableIntroduction.html).
 
 We will use the `rpivotTable` function and add arguments to specify how we would like the pivot table to look. We will use the event `Type` as a row and `Location` as Column, with a sum of the `Extra.seats`. The type of graphic will be a heatmap.
