@@ -1,0 +1,63 @@
+
+---
+title: "Business Analytics in R - part 2"
+subtitle: "https://github.com/kimnewzealand/R-tutorials "
+author: "Kim Fitter @kim_fitter "
+date: "27 August 2018"
+output:
+  xaringan::moon_reader:
+    css: ["default","rladies-fonts"]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+    includes:
+      in_header: header.html
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+```
+
+
+## Clustering
+
+
+Let's use the UCI [Online Retail Data Set](https://archive.ics.uci.edu/ml/datasets/Online+Retail) dataset.
+
+>This is a transnational data set which contains all the transactions occurring between 01/12/2010 and 09/12/2011 for a UK-based and registered non-store online retail.
+
+https://moderndata.plot.ly/principal-component-analysis-cluster-plotly/
+
+https://www.coursera.org/lecture/business-analytics/clustering-data-sYPU4
+
+http://www.kimberlycoffey.com/blog/2016/8/k-means-clustering-for-customer-segmentation
+
+```{r}
+# Import the online retail data 
+#retail <- read_excel("retail.xlsx",1L)
+```
+
+---
+
+```{r}
+bank_scaled <- bank %>% 
+      select(age,balance) %>% 
+      scale() 
+class(bank_scaled)
+set.seed(123)
+fit_kmeans <- kmeans(bank_scaled,centers = 10,nstart=20)
+library(cluster)
+clusplot(bank_scaled, fit_kmeans$cluster, color=TRUE, shade=TRUE) 
+#  	labels=2, lines=0)
+
+```
+
+```{r}
+# Model Based Clustering
+library(mclust)
+fit_mclust <- Mclust(bank_scaled)
+plot(fit_mclust) # plot results 
+summary(fit_mclust) # display the best model
+```
