@@ -1,0 +1,484 @@
+---
+title: "Business Analytics Tutorial"
+author: "by Kim Fitter"
+output: 
+  html_document: 
+    toc: true
+    toc_float: true 
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction
+
+This tutorial is aimed at those who would also like to use R for data analysis and business analytics.
+
+This introductory level tutorial assumes you have already installed R and R studio and had a brief introduction to the R basics and R Markdown. 
+
+From this R Markdown run each line of code (Ctrl + Enter) or code chunk (Ctrl + Shift +Enter) yourself or Knit -> Knit to HTML to read through the HTML version.
+
+# Getting started in RStudio
+
+Let's go to RStudio and the panes
+
+1. Files
+2. Console
+3. Environment, History
+4. Plots, Packages, Help, Viewer
+
+<center> <img src="https://stat585-at-isu.github.io/materials/01_collaborative-environment/images/rstudio-panes.png" style="width:55%"  /> </center>
+
+## Running code in the Console
+
+The Console is where you can execute single-line R commands. 
+This line is called the command line.
+
+ 
+  
+Try `3 + 2` and `Enter`
+
+ 
+
+R lets you save data by storing it inside an R object. Assign the number 5 to an object `abc_sum` with arrow assignment `<-` in the Console.  
+
+**TIP** Shortcut for `<-` using **ALT "+" "-" (or OPTION "+" "-" for OSX)**
+
+
+
+```{r calculator, eval=FALSE}
+abc_sum <- 3 + 2
+```
+
+**TIP** R is case sensitive, and there are naming conventions for objects
+
+ 
+
+What happens when you type `x` into the Console after assigning the value 5 to it? What do you see in the `Environment` pane?
+
+
+ 
+
+## Opening and knitting an R Markdown file
+
+Open `File -> New File -> R Markdown`  
+
+ 
+
+
+Give your document a title, keep the default HTML option and press **ok**.  
+
+
+ 
+
+This will open an `Untitled1` template, you have given your document a title, not saved it!  
+
+ 
+
+Save your document as `Intro.Rmd`.
+
+ 
+
+Now we will render our `R Markdown` to an HTML document using the `knit` button or shortcut **CONTROL + SHIFT + k (COMMAND + SHIFT + K for OSX**.
+
+`knit` is a function from the `knitr` package.
+
+> This function takes an input file, extracts the R code in it according to a list of patterns, evaluates the code and writes the output in another file. It can also tangle R source code from the input document.
+
+**TIP** Open `Help -> Cheatsheets -> R Markdown Cheat Sheet` 
+
+ 
+
+
+Follow the prompts to install any required R packages.  
+
+
+ 
+
+## Get these notes
+
+We will all work from a personal copy of these slides, accessed from GitHub. 
+
+Clear the contents of your .Rmd file.
+
+ 
+
+###  Find the notes for this tutorial
+
+Google `github kimnewzealand`   
+
+Go to the **R-tutorials** in pinned repositories  
+-> Analytics folder  
+->  **BusinessAnalyticsTutorial.Rmd**  
+-> **Raw** button 
+
+ 
+
+### or Navigate directly to this link
+https://github.com/kimnewzealand/R-tutorials/tree/master/Analytics 
+
+ 
+
+Select all, copy and paste the text into your .Rmd file
+
+
+ 
+
+### Let's install and load the tidyverse 
+
+We're going to use the metapackage collection of R packages `tidyverse`. 
+
+ 
+
+```{r Load the tidyverse package}
+# This is a code chunk. 
+# We can write informative comments with a hash # at the start.
+# Install the tidyverse using the install.packages() function.
+
+# Don't forget, you need to install the package before you can use it. 
+# Load the tidyverse using the library() function. 
+
+# Run this line of code using Ctrl+Enter 
+# or press the green arrow in the top right corner of the chunk to run!
+
+```
+
+ 
+
+```{r install and load tidyverse }
+# install.packages("tidyverse") # Only run this the first time to install the package
+library(tidyverse)
+```
+
+**TIP** Shortcut for running a line of code using **CTRL + ENTER (or COMMAND + ENTER for OSX)**
+
+ 
+
+# Importing data
+
+The data for this workshop is the [UCI Bank Marketing Data Set](https://archive.ics.uci.edu/ml/datasets/bank+marketing)
+
+>The data is related with direct marketing campaigns (phone calls) of a Portuguese banking institution. The classification goal is to predict if the client will subscribe a term deposit (variable y).
+
+The unzipped `bank.csv` file is available at the same link:
+
+https://github.com/kimnewzealand/R-tutorials/tree/master/Analytics
+
+
+We can import this data using the `read_delim()` function from the `readr` package and assign `<-` the data to an object called `bank`.
+
+Type ?read_delim in your console and read the Help documentation.
+
+ 
+
+```{r import bank data}
+# Assign the url of the path to the RAW bank.csv
+url <- "https://raw.githubusercontent.com/kimnewzealand/R-tutorials/master/Analytics/bank-full.csv"
+# Use the read_delim function to read in the csv, column separated with ;
+bank <- read_delim(url,delim=";")
+```
+
+ 
+
+# Descriptive Statistics
+
+Let's explore the information in this dataframe `bank`.
+
+Lots of objects in R are friendly to the `summary()` and `str()` functions. 
+
+What's is the output of `str()` using object `bank`?
+
+ 
+
+```{r structure bank}
+str(bank)
+```
+
+
+ 
+
+## The fine art of wrangling
+
+We often wish to manipulate the data in some way. This is variously known as data wrangling, data transformation or data manipulation.
+
+### The pipe
+
+To do this, we'll learn a very useful operator, the pipe `%>%` 
+
+Piping makes code easier to read (arguably) and is used extensively in the `tidyverse`  
+
+**TIP** Shortcut for `%>%` using **CTRL + SHIFT + M (or CMD + SHIFT + M for OSX)** 
+
+The function takes one argument, an object called `<some data>`
+  
+
+`str(<some data>) `
+
+
+
+But we could also `%>%` the data into the function.
+
+`<some data> %>% str() `
+
+
+ 
+
+## Data Manipulation
+
+Let's use a data manipulation package is called `dplyr`, which is also part of `tidyverse`. 
+
+`dplyr` uses verbs as functions and the pipe. 
+
+Type ?`dplyr` in your console and read the Help documentation.
+
+ 
+
+## Numeric Variables
+
+Let's select a numeric variable and calculate descriptive statistics.
+
+ 
+
+```{r age summary}
+bank %>% 
+      select(age) %>%  # use the select verb to select the age variable
+      summary()
+```
+
+
+ 
+
+## Categorical Variables
+
+Let's select a categorical variable and calculate descriptive statistics.
+
+ 
+
+```{r job table}
+bank %>% 
+      select(job) %>%  # use the select verb to select the job variable
+      table()  # create a contingency table with frequencies
+```
+
+
+
+```{r job prop table}
+bank %>% 
+      select(job) %>%  # use the select verb to select the job variable
+      table() %>%  # create a contingency table with frequencies
+      prop.table()  # create a contingency table with proportions
+```
+
+ 
+
+# Data Visualisation
+
+
+## The structure of a ggplot
+
+One R method of plotting data is with the `ggplot2` package, which comes with the `tidyverse`.
+
+Create simple to complex plots with `ggplot2`  by adding layers.
+
+ 
+
+We define a mapping with aesthetics function `aes()` to the variables within the `ggplot()` function to initialise the ggplot object.
+
+```{}
+<some data> %>% 
+  ggplot(aes(x = <column1>, y = <column2>))
+```
+
+ 
+
+Next we add another layer such as a geom (geometric object) to represent data points:
+
+```{}
+<some data> %>% 
+  ggplot(aes(x = <column1>, y = <column2>)) +
+  geom_point() # add a scatterplot geom with geom_point() function
+```
+
+ 
+
+## Your  first ggplot
+
+First create a `ggplot` object `p` 
+ 
+
+```{r first ggplot }
+# Create a ggplot with age and campaign; number of contacts performed during this campaign and for this client (numeric, includes last contact)
+p <- bank %>% 
+      ggplot(aes(age,campaign)) + 
+      geom_point() 
+p
+```
+
+ 
+
+## What happens when you add colour to the points for the y variable
+
+```{r adding colour}
+# Add colour = y to the aesthetics
+p <- bank %>% 
+      ggplot(aes(age,campaign,colour=y)) + 
+      geom_point() 
+p
+```
+
+
+
+ 
+
+## Let's add some interactivity to the plot
+
+ 
+
+```{r interactive ggplot, message=FALSE, fig.height=3}
+# install.packages("plotly")
+library(plotly)
+ggplotly(p, height = 350, width=350)
+```
+
+ 
+
+## Density plots
+
+Let's view the distribution of a numeric variable with a density plot.
+
+ 
+
+```{r density plot}
+# Creat a density plot of the age variable by target variable y
+bank %>% 
+      ggplot(aes(age,colour=y)) + 
+      geom_density()
+```
+
+
+
+
+ 
+
+## Bar plot 
+
+Let's view a bar plot and add a title.
+
+ 
+
+```{r ggplot geom_bar, message=FALSE, warning=FALSE}
+# Create a barplot
+bank %>% 
+      ggplot(aes(y,fill=y)) +
+      geom_bar() +
+      ggtitle("Barplot of Clients who Subscribed to a Term Deposit (Yes/No)")
+```
+
+ 
+
+# Predictive Model - Logistic regression
+
+Let's use the [caret R package](topepo.github.io/caret/index.html). According to the package website, there are over 200 models available within the `caret` framework.
+
+> The caret package (short for _C_lassification _A_nd _RE_gression _T_raining) is a set of functions that attempt to streamline the process for creating predictive models. The package contains tools for:
+data splitting
+pre-processing
+feature selection
+model tuning using resampling
+variable importance estimation
+as well as other functionality.
+
+```{r logistic regression, message=FALSE}
+# Install caret package
+# install.packages("caret")
+library(caret)
+# Remove the duration as per meta data, duration should be discarded to have a realistic predictive model
+bank <- bank %>%  select(-duration)
+# Create training and test sets using partitions
+inTrain <-  createDataPartition(y = bank$y, # Vector of outcomes
+                              p = 0.7, # Proportion of values in training set
+                              list = FALSE) # Return a vector of indices
+ 
+# Create training and test sets
+training <-  bank[inTrain, ]
+test     <-  bank[-inTrain, ]
+# Train a logistic model on the training data set
+model <- train(y ~ ., 
+            data = training, 
+            method = "glm", 
+            family = "binomial")
+```
+
+ 
+
+## Model results
+
+```{r model results}
+# Plot the variable importance using ggplot.  The variable importance shows how the model's accuracy reduces as each variable is removed from the model
+varImp(model) %>% 
+      ggplot() + 
+      geom_col()
+# View the model results, given default model performance measures
+model$results
+```
+
+
+
+
+
+ 
+
+# Survival tips
+
+- Modern day coding practice comprises almost entirely searching "how do I do `x` in `language`".
+- Type `?function` into the RStudio Console, and the Help pane will display documentation. 
+- Cheatsheets online or in R-Studio Help menu
+- Twitter
+- Online forums such as stackoverflow
+
+<center> <img src="https://i.gifer.com/1tUl.gif"> </center>
+
+ 
+
+
+# Further Tutorials
+
+Further Introduction to R :
+- [DataCamp basics](https://www.datacamp.com/courses/free-introduction-to-r%20)
+
+Software Carpentry 
+- [Programming with R](https://swcarpentry.github.io/r-novice-inflammation/)
+
+Further dplyr:
+- [dplyr](https://dplyr.tidyverse.org/)
+
+Further ggplot :
+- [ggplot2](https://ggplot2.tidyverse.org/)
+
+DataCamp course using caret
+- [Machine Learning Toolbox](https://www.datacamp.com/courses/machine-learning-toolbox)
+
+From Excel background to R :
+- [Using the Summer of Tech data](https://github.com/kimnewzealand/R-tutorials/blob/master/from-excel-tutorial-sotdata.Rmd)
+
+ 
+
+
+# Acknowledgements
+
+- This workshop was adapted from an R-Ladies [useR! 2018 R-Curious workshop](https://github.com/softloud/rcurious). The [video](https://youtu.be/AmqxVDlfKQY) is highly recommended.
+
+- [R for Data Science by Hadley Wickham](http://r4ds.had.co.nz/)
+
+- [Advanced R by Hadley Wickham](http://adv-r.had.co.nz/)
+
+- Lichman, M. (2013). UCI Machine Learning Repository [http://archive.ics.uci.edu/ml]. Irvine, CA: University of California, School of Information and Computer Science.
+
+[Moro et al., 2014] S. Moro, P. Cortez and P. Rita. A Data-Driven Approach to Predict the Success of Bank Telemarketing. Decision Support Systems, Elsevier, 62:22-31, June 2014
+
+
+ 
+
+
+

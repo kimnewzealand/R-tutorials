@@ -4,44 +4,53 @@ author: "Kim Fitter"
 date: "27 August 2018"
 output:
   xaringan::moon_reader:
-    css: ["default","rladies-fonts"]
+    css: ["default","rladies-fonts","footer-header.css"]
+    
     
 ---
 
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE)
-knitr::opts_chunk$set(out.width = "70%") 
+knitr::opts_chunk$set(out.width = "0%") 
 ```
 
 ```{r setup2, include=FALSE}
 library(tidyverse)
 ```
 
+
+layout: true
+  
+<div class="my-header"></div>
+
+<div class="my-header"><span>Business Analytics in R 
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</span></div>  
+
+---
+
 # What is the format of this workshop?
 
 --
-####`3:00`- `4:00` 
+####`3:30`- `4:30` 
 
-- Introduction to RStudio as a way of using R
 
-- Provide some R terminology to enable you to decifer error or warning messages
+- Introdution to some R terminology 
 
-- Real examples of Business Analytics with R
+- Overview of business analytics and types
 
-- Overview of Business Anlytics  
+- Challenges faced with data
 
-####`4:00`- `4:30`  
+- Data sources
 
-- Tea break  
+- Real examples using R
 
 ####`4:30`- `6:00` 
 
-- Tutorial using the `tidyverse`, one of the current R frameworks
+- Descriptive analytics,  visualisations and predictive modeling using the tidyverse (Tutorial)
 
 
-#### Link to presentation and tutorials: 
-
-https://github.com/kimnewzealand/R-tutorials
+#### Link to presentation and tutorials: https://github.com/kimnewzealand/R-tutorials
 
 ---
 
@@ -66,7 +75,9 @@ class: inverse, center, middle
 
 - RStudio is an [Integrated development environment (IDE)](https://en.wikipedia.org/wiki/Integrated_development_environment)
 
-- [RStudio is a way to talk to your computer. R is a language to speak to it](https://www.safaribooksonline.com/library/view/hands-on-programming-with/9781449359089/ch01.html#_objects)
+- RStudio is a way to talk to your computer
+
+- R is a language to speak in
 
 
 
@@ -74,10 +85,14 @@ class: inverse, center, middle
 
 # Why use R for Business?
 
+--
+
 - Communication
 
 
+#### Example: The New Zealand Tourism Dashboard
 
+https://mbienz.shinyapps.io/tourism_dashboard_prod/
 
 --
 
@@ -86,7 +101,7 @@ class: inverse, center, middle
 
 --
 
-- Tidyverse Frameworks  
+- Tidyverse framework  
 
 --
 
@@ -94,10 +109,20 @@ class: inverse, center, middle
 
 --
 
+- Flexibility and customisation
 
-### Example: The New Zealand Tourism Dashboard
 
-https://mbienz.shinyapps.io/tourism_dashboard_prod/
+```{r airbnb theme, echo=FALSE,warning=FALSE, out.width = "30%"}
+library(ggtech)
+d <- data.frame(x = sample(5), y=1:5)
+ggplot(aes(x,y), data=d) + 
+  geom_tech(size=0.25, theme="airbnb") + 
+  theme_airbnb_fancy() +
+  ggtitle("Airbnb Customised Branding Theme")
+      
+```
+
+
 
 
 ---
@@ -122,7 +147,7 @@ A typical data project looks something like this workflow;<sup>1</sup>
 
 # Data Structure Types in R
 
-<img src="http://venus.ifca.unican.es/Rintro/_images/dataStructuresNew.png" style="width:60%">
+<center><img src="http://venus.ifca.unican.es/Rintro/_images/dataStructuresNew.png" style="width:60%"></center>
 
 `Vectors`: one-dimensional arrays used to store data of the same type  
 `Matrices`: two-dimensional arrays to store data of the same type  
@@ -138,9 +163,11 @@ A typical data project looks something like this workflow;<sup>1</sup>
 
 # Dataframes in R
 
-In this workshop the datasets we will work with dataframes. 
+In this workshop we will work with `dataframes`
 
-The column names are variable names.
+The column names are variable names
+
+The rows are observations
 
 <center> <img src="http://garrettgman.github.io/images/tidy-1.png"> </center>
 
@@ -151,7 +178,7 @@ The column names are variable names.
 
 # How to run code in R?!
 
-There are 2 ways of interacting with RStudio:  
+Two ways of interacting with RStudio:  
 
 1.  Files that contain your code
 
@@ -175,45 +202,46 @@ We can use [R Markdown](https://bookdown.org/yihui/rmarkdown/basics.html) files 
 
 > 1. For **communicating** to decision makers, who want to focus on the conclusions, not the code behind the analysis.
 
-> 2. For **collaborating** with other data scientists (including future you!), who are interested in both your conclusions, and how you reached them ( i.e. the code).
+> 2. For **collaborating** with others (including future you!), who are interested in both your conclusions, and how you reached them ( i.e. the code).
 
 > 3. As an environment in which to do data science, as a modern day lab **notebook** where you can capture not only what you did, but also what you were thinking.
 
-R Markdown documents are fully reproducible and support dozens of output formats, like HTML, PDFs, Word files, presentations, websites and more.
+[R Markdown](https://bookdown.org/yihui/rmarkdown/basics.html) documents are fully reproducible and support dozens of output formats, like HTML, PDFs, Word files, presentations, websites and more.
 
 ---
 
 # Functions
 
-The most common element of packages are functions. 
+Functions are one of R's building blocks
 
-Functions run other people's code for us, so that we don't have to reinvent the wheel. 
+Functions in R take the form `function(arguments, ...)`
 
-Functions in R take the form `function(arguments)`.
+R also comes preloaded with a `base` of functions commonly used
 
-R also comes preloaded with a `base` of functions commonly used. For a complete list of functions, use `library(help = "base")`.
+For a complete list of functions, use `library(help = "base")`
 
-In R, you'll often see functions called `closures`. This name reflects the fact that R functions capture, or enclose, their environments.
+In R, you'll often see functions called `closures` which are functions created by other functions
 
 ---
 
 # R Packages
 
-Packages are collections of other people's code. 
+Packages are collections of other people's code and functions 
 
-Often someone has already written a script that does what you want to do.
+Often someone has already written a package that does what you want to do
 
-## For installation,  first time only
+## Installation,  first time only
 
-`install.packages("name of package")`
+Install packages from :
+- CRAN - The Comprehensive R Archive Network
+https://cran.r-project.org/ 
 
-This function will install the package from  https://cran.r-project.org/ which is CRAN - The Comprehensive R Archive Network.
-
-**Note** Some packages can also be installed from  https://github.com/
+- GitHub
+https://github.com/
  
 ## Loading and attaching package
 
-`library(name of package)`
+Everytime you want to use the package you need to load and attach the package 
 
 ---
 
@@ -223,7 +251,7 @@ This function will install the package from  https://cran.r-project.org/ which i
 
 - The `Global Environment` is the user workspace  
 
-- The `active environment` is the current environment. Typically this will be the same as the `Global Environment`.
+- The `active environment` is the current environment. Typically this will be the same as the `Global Environment`
 
 - Each time R runs a function, it creates a new `runtime environment` to evaluate the function  
 - R follows a special set of scoping rules to look up objects
@@ -241,13 +269,20 @@ The environments and packages on the search path are connected as shown in the e
 
 # Objects in R
 
+>"To understand computations in R, two slogans are helpful:  
+   Everything that exists is an object.  
+   Everything that happens is a function call."  
+
+>**John Chambers**
+
 - R is object orientated
 
-- In R environments, functions and dataframes are objects
+- Environments, functions and dataframes are objects
 
-- R saves an object in the active environment with the assign  `<-` arrow
+- R saves an object in the active environment with the assign  **`<-`** arrow
 
 - If the name exists already, R will overwrite it
+
 
 
 
@@ -266,62 +301,18 @@ The environments and packages on the search path are connected as shown in the e
 
 ---
 
-layout: true
-
-background-image:url(http://analytics-magazine.org/wp-content/uploads/2016/07/Navigating-48624802-Dirk-Ercken.jpg)
-background-size: cover
-
----
-
-# Challenges
-
---
-  
-  
-  
-  
-  
-## Less than Big Data 
-
---
-
-## Data Quality
-
---
-
-## Timelines and Cost
-
----
-
-layout: false
-
-## Some data sources for data analytics:  
-
-- Online insight communities  
-- Online or mobile surveys
-- Customer database
-- Open data  
-`figure.nz`   
-`stats.govt.nz`
-
-### Example : Flu Tracking 
-
-FluTracking.net, is an Australian and New Zealand project which crowdsources data with weekly email surveys for tracking influenza. The data is used for scientific research and the project utilises R to map this data in a public app.
-
-https://denden.shinyapps.io/MapApp/
-
----
-
 # Descriptive Analytics
 
-- Describing a view of past events  
-- Also known as Exploratory Data Analysis (EDA)  
+- Describe a view of past events 
+
 - Develop understanding and intuition of your data  
-- Step before further data collection, data cleaning, data manipulations or modeling
 
-## Descriptive statistics   
+--
 
-includes:
+## Two Types
+
+
+#### Descriptive Statistics   
 
 `mean`  
 `standard deviation`  
@@ -330,9 +321,7 @@ includes:
 `unsupervised models`
 
 
-## Data Visualisations  
-
-includes:  
+#### Data Visualisations  
 
 `scatterplots`   
 `barplots`   
@@ -342,29 +331,58 @@ includes:
 
 ---
 
-# Predictive Analytics
+layout: true
 
-Predict what could happen in a certain time frame ahead. 
-
-An independent, target or y variable could either be:
-- a numerical prediction or
-- predict a binary outcome yes = 1 or no = 0 to a question
-
-
+background-image:url(http://analytics-magazine.org/wp-content/uploads/2016/07/Navigating-48624802-Dirk-Ercken.jpg)
+background-size: cover
 
 ---
 
-# Prescriptive Analytics
+---
 
-> Prescriptive methodologies not only look into the future to predict likely outcomes but they also attempt to shape the future by optimizing the targeted business objective while balancing constraints.
+layout: true
+  
+<div class="my-header"></div>
+
+<div class="my-header"><span>Business Analytics in R   
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</span></div>
 
 ---
 
-class: inverse, center, middle
+# What are the challenges you face with data?
 
-# Tea Break
+--
+  
+  
+### Less than Big Data - availability of data
+
+--
+
+### Data Quality
+
+--
+
+### Timelines and Cost
 
 ---
+
+
+# Data sources  
+
+- Online insight communities  
+- Online or mobile surveys
+- Customer database
+- Open data including `figure.nz` and `stats.govt.nz`
+
+### Example : Flu Tracking 
+
+FluTracking.net, is an Australian and New Zealand project which crowdsources data with weekly email surveys for tracking influenza. The data is used for scientific research and the project utilises R to map this data in a public app.
+
+https://denden.shinyapps.io/MapApp/
+
+---
+
 
 class: inverse, center, middle
 
@@ -372,10 +390,20 @@ class: inverse, center, middle
 
 ## Installation 
 
-install R version 3.5.1 https://www.r-project.org/  
-install RStudio Desktop https://www.rstudio.com/
+Install R version 3.5.1 https://www.r-project.org/  
+Install RStudio Desktop https://www.rstudio.com/
 
 ---
+
+layout: true
+  
+<div class="my-header"></div>
+
+<div class="my-header"><span>Business Analytics in R &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</span></div>
+
+---
+
 
 # Sticky note signalling
 
@@ -435,12 +463,14 @@ Try `3 + 2` and `Enter`
 
 --
 
-R lets you save data by storing it inside an R object. Assign the number 5 to an object `x` with arrow assignment `<-` in the Console.  
+R lets you save data by storing it inside an R object. Assign the number 5 to an object `abc_sum` with arrow assignment `<-` in the Console.  
+
+**TIP** Shortcut for `<-` using **ALT "+" "-" (or OPTION "+" "-" for OSX)**
 
 
 
 ```{r calculator, eval=FALSE}
-x <- 3 + 2
+abc_sum <- 3 + 2
 ```
 
 **TIP** R is case sensitive, and there are naming conventions for objects
@@ -458,11 +488,9 @@ Open `File -> New File -> R Markdown`
 
 --
 
-Follow the prompts to install any required R packages.  
-
---
 
 Give your document a title, keep the default HTML option and press **ok**.  
+
 
 --
 
@@ -474,11 +502,19 @@ Save your document as `Intro.Rmd`.
 
 --
 
-Now we will `knit` our document to an HTML document using the `knit` button or shortcut **control + shift + k**.
+Now we will render our `R Markdown` to an HTML document using the `knit` button or shortcut**CONTROL + SHIFT + k (COMMAND + SHIFT + K for OSX**.
 
 `knit` is a function from the `knitr` package.
 
 > This function takes an input file, extracts the R code in it according to a list of patterns, evaluates the code and writes the output in another file. It can also tangle R source code from the input document.
+
+**TIP** Open `Help -> Cheatsheets -> R Markdown Cheat Sheet` 
+
+--
+
+
+Follow the prompts to install any required R packages.  
+
 
 ---
 
@@ -490,19 +526,19 @@ Clear the contents of your .Rmd file.
 
 --
 
-###  Find them yourself
+###  Find the notes for this tutorial
 
 Google `github kimnewzealand`   
 
 Go to the **R-tutorials** in pinned repositories  
 -> Analytics folder  
-->  **2018-08_Workshop_Notes.Rmd**  
+->  **BusinessAnalyticsTutorial.Rmd**  
 -> **Raw** button 
 
 --
 
 ### or Navigate directly to this link
-https://github.com/kimnewzealand/R-tutorials/Analytics 
+https://github.com/kimnewzealand/R-tutorials/tree/master/Analytics 
 
 --
 
@@ -513,7 +549,7 @@ Select all, copy and paste the text into your .Rmd file
 
 ### Let's install and load the tidyverse 
 
-We're going to use the metapackage collection of R packages `tidyverse` to help us with our analysis. 
+We're going to use the metapackage collection of R packages `tidyverse`. 
 
 --
 
@@ -533,10 +569,11 @@ We're going to use the metapackage collection of R packages `tidyverse` to help 
 --
 
 ```{r install and load tidyverse }
-# install.packages("tidyverse") # Only run this the first time to install
+# install.packages("tidyverse") # Only run this the first time to install the package
 library(tidyverse)
 ```
 
+**TIP** Shortcut for running a line of code using **CTRL + ENTER (or COMMAND + ENTER for OSX)**
 
 ---
 
@@ -544,20 +581,24 @@ library(tidyverse)
 
 The data for this workshop is the [UCI Bank Marketing Data Set](https://archive.ics.uci.edu/ml/datasets/bank+marketing)
 
-The unzipped csv file is available at the url:
+>The data is related with direct marketing campaigns (phone calls) of a Portuguese banking institution. The classification goal is to predict if the client will subscribe a term deposit (variable y).
 
-https://github.com/kimnewzealand/R-tutorials/Analytics
+The unzipped `bank.csv` file is available at the same link:
+
+https://github.com/kimnewzealand/R-tutorials/tree/master/Analytics
 
 
-We can import this data using the `read_delim()` function from the `readr` package and assign `<-` the data to an object called bank.
+We can import this data using the `read_delim()` function from the `readr` package and assign `<-` the data to an object called `bank`.
+
+Type ?read_delim in your console and read the Help documentation.
 
 --
 
 ```{r import bank data}
-url <- "https://github.com/kimnewzealand/R-tutorials/Analytics"
-setwd("~/R-tutorials/Analytics")
+# Assign the url of the path to the RAW bank.csv
+url <- "https://raw.githubusercontent.com/kimnewzealand/R-tutorials/master/Analytics/bank-full.csv"
 # Use the read_delim function to read in the csv, column separated with ;
-bank <- read_delim("bank.csv",delim=";")
+bank <- read_delim(url,delim=";")
 ```
 
 ---
@@ -585,9 +626,9 @@ We often wish to manipulate the data in some way. This is variously known as dat
 
 ### The pipe
 
-To do this, we'll learn a very useful operator, the pipe `%>%`. 
+To do this, we'll learn a very useful operator, the pipe `%>%` 
 
-Piping makes code easier to read (arguably) and is used extensively in the `tidyverse`.  
+Piping makes code easier to read (arguably) and is used extensively in the `tidyverse`  
 
 **TIP** Shortcut for `%>%` using **CTRL + SHIFT + M (or CMD + SHIFT + M for OSX)** 
 
@@ -605,7 +646,7 @@ But we could also `%>%` the data into the function.
 
 ---
 
-# Data Manipulation
+## Data Manipulation
 
 Let's use a data manipulation package is called `dplyr`, which is also part of `tidyverse`. 
 
@@ -660,11 +701,11 @@ bank %>%
 
 One R method of plotting data is with the `ggplot2` package, which comes with the `tidyverse`.
 
-Create simple to complex plots with `ggplot2`  by adding layers step by step.
+Create simple to complex plots with `ggplot2`  by adding layers.
 
 --
 
-We define a mapping with aesthetics function `aes()` to the variables within the `ggplot()` function to create the base plot.
+We define a mapping with aesthetics function `aes()` to the variables within the `ggplot()` function to initialise the ggplot object.
 
 ```{}
 <some data> %>% 
@@ -685,17 +726,28 @@ Next we add another layer such as a geom (geometric object) to represent data po
 
 ## Your  first ggplot
 
-First create a `ggplot` object `p`:
-
+First create a `ggplot` object `p` 
 --
 
 ```{r first ggplot }
+# Create a ggplot with age and campaign; number of contacts performed during this campaign and for this client (numeric, includes last contact)
 p <- bank %>% 
-      ggplot(aes(age,balance)) + 
+      ggplot(aes(age,campaign)) + 
       geom_point() 
 p
 ```
 
+---
+
+## What happens when you add colour to the points for the y variable
+
+```{r adding colour}
+# Add colour = y to the aesthetics
+p <- bank %>% 
+      ggplot(aes(age,campaign,colour=y)) + 
+      geom_point() 
+p
+```
 
 
 
@@ -720,10 +772,12 @@ Let's view the distribution of a numeric variable with a density plot.
 --
 
 ```{r density plot}
+# Creat a density plot of the age variable by target variable y
 bank %>% 
-      ggplot(aes(age)) + 
+      ggplot(aes(age,colour=y)) + 
       geom_density()
 ```
+
 
 
 
@@ -731,28 +785,64 @@ bank %>%
 
 ## Bar plot 
 
-Let's view a bar plot and add a theme.
+Let's view a bar plot and add a title.
 
 --
 
-```{r ggplot geom_bar, message=FALSE}
-#install.packages("ggthemes")
-library(ggtheme)
+```{r ggplot geom_bar, message=FALSE, warning=FALSE}
+# Create a barplot
 bank %>% 
-      ggplot(aes(contact)) +
+      ggplot(aes(y,fill=y)) +
       geom_bar() +
-      theme_excel()
+      ggtitle("Barplot of Clients who Subscribed to a Term Deposit (Yes/No)")
 ```
 
 ---
 
-## Predictive Model - Logistic regression
+# Predictive Model - Logistic regression
 
-```{r logistic regression}
-bank <- bank %>%  
-      mutate(y=recode(y,"no"=0,"yes"=1))
-model <- glm(y~ ., bank, family = "binomial")
-model %>% summary()
+Let's use the [caret R package](topepo.github.io/caret/index.html). According to the package website, there are over 200 models available within the `caret` framework.
+
+> The caret package (short for _C_lassification _A_nd _RE_gression _T_raining) is a set of functions that attempt to streamline the process for creating predictive models. The package contains tools for:
+data splitting
+pre-processing
+feature selection
+model tuning using resampling
+variable importance estimation
+as well as other functionality.
+
+```{r logistic regression, message=FALSE}
+# Install caret package
+# install.packages("caret")
+library(caret)
+# Remove the duration as per meta data, duration should be discarded to have a realistic predictive model
+bank <- bank %>%  select(-duration)
+# Create training and test sets using partitions
+inTrain <-  createDataPartition(y = bank$y, # Vector of outcomes
+                              p = 0.7, # Proportion of values in training set
+                              list = FALSE) # Return a vector of indices
+ 
+# Create training and test sets
+training <-  bank[inTrain, ]
+test     <-  bank[-inTrain, ]
+# Train a logistic model on the training data set
+model <- train(y ~ ., 
+            data = training, 
+            method = "glm", 
+            family = "binomial")
+```
+
+---
+
+## Model results
+
+```{r model results}
+# Plot the variable importance using ggplot.  The variable importance shows how the model's accuracy reduces as each variable is removed from the model
+varImp(model) %>% 
+      ggplot() + 
+      geom_col()
+# View the model results, given default model performance measures
+model$results
 ```
 
 
@@ -773,18 +863,15 @@ model %>% summary()
 
 ---
 
-class: center, middle
+class: inverse, center, middle
 
-Thanks!
+# Thanks!
 
 Slides created with the `xaringan` R package
 
+Email : kim@validly.co  
 
-
-<a href="mailto:kim@validly.co"><i class="fa fa-paper-plane fa-fw"></i>&nbsp; kim@validly.co</a><br>
-<a href="https://kimnewzealand.github.io/"><i class="fa fa-link fa-fw"></i>&nbsp; kimnewzealand.github.io</a><br>
-<a href="http://twitter.com/kim_fitter"><i class="fa fa-twitter fa-fw"></i>&nbsp; @kim_fitter</a><br>
-<a href="http://github.com/kimnewzealand"><i class="fa fa-github fa-fw"></i>&nbsp; kimnewzealand</a><br>
+Twitter : @Kim_Fitter
 
 
 
@@ -802,8 +889,11 @@ Software Carpentry
 Further dplyr:
 - [dplyr](https://dplyr.tidyverse.org/)
 
-Further Visualisation :
+Further ggplot :
 - [ggplot2](https://ggplot2.tidyverse.org/)
+
+DataCamp course using caret
+- [Machine Learning Toolbox](https://www.datacamp.com/courses/machine-learning-toolbox)
 
 From Excel background to R :
 - [Using the Summer of Tech data](https://github.com/kimnewzealand/R-tutorials/blob/master/from-excel-tutorial-sotdata.Rmd)
@@ -813,10 +903,15 @@ From Excel background to R :
 
 # Acknowledgements
 
-. 
 - This workshop was adapted from an R-Ladies [useR! 2018 R-Curious workshop](https://github.com/softloud/rcurious). The [video](https://youtu.be/AmqxVDlfKQY) is highly recommended.
+
 - [R for Data Science by Hadley Wickham](http://r4ds.had.co.nz/)
+
 - [Advanced R by Hadley Wickham](http://adv-r.had.co.nz/)
+
+- Lichman, M. (2013). UCI Machine Learning Repository [http://archive.ics.uci.edu/ml]. Irvine, CA: University of California, School of Information and Computer Science.
+
+[Moro et al., 2014] S. Moro, P. Cortez and P. Rita. A Data-Driven Approach to Predict the Success of Bank Telemarketing. Decision Support Systems, Elsevier, 62:22-31, June 2014
 
 
  
