@@ -285,9 +285,9 @@ The environments and packages on the search path are connected as shown in the e
 
 
 
+The `workspace` refers to all the objects that you create during an R session, including any packages that are loaded.
 
-
-
+**TIP** restart R often!
 
 
 ---
@@ -502,18 +502,18 @@ Save your document as `Intro.Rmd`.
 
 --
 
-Now we will render our `R Markdown` to an HTML document using the `knit` button or shortcut**CONTROL + SHIFT + k (COMMAND + SHIFT + K for OSX**.
+Now we will render our `R Markdown` to an HTML document using the `knit` button or shortcut **CONTROL + SHIFT + K (COMMAND + SHIFT + K for OSX)**.
 
 `knit` is a function from the `knitr` package.
 
 > This function takes an input file, extracts the R code in it according to a list of patterns, evaluates the code and writes the output in another file. It can also tangle R source code from the input document.
 
-**TIP** Open `Help -> Cheatsheets -> R Markdown Cheat Sheet` 
-
 --
 
 
-Follow the prompts to install any required R packages.  
+Follow the prompts to install any required R packages. 
+
+**TIP** Open `Help -> Cheatsheets -> R Markdown Cheat Sheet` 
 
 
 ---
