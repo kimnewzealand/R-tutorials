@@ -11,7 +11,7 @@ output:
 
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE)
-knitr::opts_chunk$set(out.width = "0%") 
+knitr::opts_chunk$set(out.width = "60%") 
 ```
 
 ```{r setup2, include=FALSE}
@@ -50,13 +50,13 @@ layout: true
 - Descriptive analytics,  visualisations and predictive modeling using the tidyverse (Tutorial)
 
 
-#### Link to presentation and tutorials: https://github.com/kimnewzealand/R-tutorials
+#### Link to materials: https://github.com/kimnewzealand/R-tutorials
 
 ---
 
 class: inverse, center, middle
 
-# Introduce yourselves - a sentence with your name and your R level
+# Introduce yourselves - a sentence with your name, industry and your R level
 
 ---
 
