@@ -1,3 +1,4 @@
 # R generated files #
 *.html
 *.Rhistory
+.Rproj.user
