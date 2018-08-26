@@ -1,0 +1,27 @@
+div.my-header {
+    background-color: #272822;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 20px;
+    width: 100%;
+}
+div.my-header span {
+    font-size: 10pt;
+    color: #F7F8FA;
+    position: absolute;
+    left: 15px;
+    top: 2px;
+}
+
+.remark-slide-number {
+  font-size: 10pt;
+  margin-top: -11.6px;
+  margin-right: 10px;
+  color: black;
+  opacity: 1
+}
+
+.title-slide .remark-slide-number {
+  display: none;
+}
