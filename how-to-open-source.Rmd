@@ -3,8 +3,8 @@ title: "How to Contribute to Open Source"
 author: 'Kim Fitter '
 date: "30 October 2019"
 output:
-  html_document: default
   xaringan::moon_reader: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -35,19 +35,20 @@ class: inverse, center, middle
 ---
 
 class: inverse
+
 ## My Journey
 
 ```{r journey}
 # Create nodes and edges
 nodes <- data.frame(id = 3:1,
-                    value = c(20,10,20),
-                    label=c("Previous Career \n - Project Manager ","Career change","New Career  -  Coder"),
+                    value = c(20,20,20),
+                    label=c("PREVIOUS CAREER \n - PROJECT MANAGER ","CAREER CHANGE","NEW CAREER  -  CODER"),
                     font.color = "#ffffff",
                     shape=c("circle","triangle","circle"))
 edges <- data.frame(from = c(2,3), to = c(1,2))
 # Plot the 3 node network
 v <- visNetwork(nodes, edges, width = "100%",
- style = "font-family:Comic Sans MS;color:#ff0000;font-size:25px;text-align:center;") %>% 
+ style = "font-family:Comic Sans MS;color:#ff0000;font-size:50px;text-align:center;") %>% 
   visEdges(arrows = "to",length = 300)  %>% 
   visNodes(color = "#13b3a9")
 v
@@ -56,27 +57,27 @@ v
 
 ---
 
-class: inverse
 
-# New Skills
+
+# The Skills
 
 
 ```{r skills}
 
-# Create bubbles for the new skills
+# Create bubbles for the the skills
 b <- bubbles(value = rep(5,5), 
-        label = c("Coding","Writing","Speaking","Organising","Interests"),
+        label = c("CODING","WRITING","SPEAKING","ORGANISING","INTERESTS"),
         textColor = "white", color="#13b3a9")
 frameWidget(b)
 ```
 
 ---
-class: inverse
+
 
 # Open Source Communities
 
 ```{r communities}
-# Load data
+# Load sample data
 data(MisLinks)
 data(MisNodes)
 # Plot a social network
@@ -91,14 +92,17 @@ frameWidget(f)
 
 ---
 
-class: inverse
+
 
 # Tips
 
-- Create a GitHub profile  
-- Create a blog  
-- Write about what you have been doing  
-- Speak about ....
+- Find an area that interests you  
+- Create a GitHub profile    
+- Create a blog   
+- Give technical feedback   
+- Write and speak 
+
+and......
 
 <center> <img src="https://i.gifer.com/1tUl.gif"> </center>
 
@@ -138,6 +142,5 @@ Twitter @Kim_Fitter
 
 
  
-
 
 
