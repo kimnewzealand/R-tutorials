@@ -1,0 +1,97 @@
+---
+title: "Using Docker and Kubernetes"
+author: 'Kim Fitter '
+date: "8 July 2020"
+output:
+  xaringan::moon_reader: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = TRUE)
+knitr::opts_chunk$set(
+	echo = FALSE,
+	message = FALSE,
+	warning=FALSE
+)
+```
+
+```{r load packages}
+library(xaringan)
+
+```
+
+
+class: inverse, center, middle
+
+<center> <img src="https://twitter.com/hashtag/Kubernetes?src=hash&amp;ref_src=twsrc%5Etfw"> </center>
+
+
+---
+
+class: inverse
+
+## Intro 
+
+
+
+---
+
+
+
+# 
+
+<center> <img src="https://pbs.twimg.com/media/EPETtRmX4AA8Utv?format=jpg&name=900x900"> </center>
+
+---
+
+
+
+# 
+
+<center> <img src="https://pbs.twimg.com/media/EPETtt-WsAYPWRI?format=jpg&name=small"> </center>
+---
+
+
+# slide x
+
+<center> <img src="https://pbs.twimg.com/media/EJUkDXBXYAQ14qH?format=jpg&name=900x900"> </center>
+
+---
+
+
+
+#  
+and......
+
+https://pbs.twimg.com/tweet_video_thumb/EIbrw9rWsAAetZc?format=jpg&name=small
+
+
+---
+
+class: inverse, center, middle
+
+# Thanks!
+
+Slides created with the `xaringan` R package
+
+
+
+### Link to materials
+
+https://github.com/kimnewzealand/R-tutorials
+ 
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+

@@ -3,8 +3,8 @@ title: "How to Contribute to Open Source"
 author: 'Kim Fitter '
 date: "30 October 2019"
 output:
-  xaringan::moon_reader: default
   html_document: default
+  xaringan::moon_reader: default
 ---
 
 ```{r setup, include=FALSE}
