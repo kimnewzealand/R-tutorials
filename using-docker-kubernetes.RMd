@@ -18,54 +18,152 @@ knitr::opts_chunk$set(
 
 ```{r load packages}
 library(xaringan)
-
 ```
 
 
+
+
+
+## What are Containers ?
+
+- Standalone executables
+- Package code, runtime, system tools, system libraries, and configs altogether
+- Share operating systems
+- Predictable
+- Repeatable 
+- Immutable
+
+
+<center>
+<span>
+ 
+ <img src="https://www.docker.com/sites/default/files/d8/2018-11/container-vm-whatcontainer_2.png"  height="250" >  <img src="https://www.docker.com/sites/default/files/d8/2018-11/docker-containerized-appliction-blue-border_2.png"  height="250" >
+</span></center>
+
+---
+## What is Docker?
+
+Docker* automates the development, testing and  deployment of applications inside software containers
+
+
+
+
+
+*is an open-source project
+
+---
+
+## Docker Images
+
+When using Docker, a developer creates an app or service and packages it and its dependencies into a container image. 
+
+An **image** is a static representation of the app or service and its configuration and dependencies.
+
+<center> <img src="https://docs.microsoft.com/en-us/dotnet/architecture/microservices/container-docker-introduction/media/docker-containers-images-registries/taxonomy-of-docker-terms-and-concepts.png" height="500"> </center>
+
+---
+
+## Run a Node.js app in Docker
+
+Create app and a <a href="https://medium.com/faun/how-to-build-a-node-js-application-with-docker-f596fbd3a51">dockerfile</a> with the following :
+
+<code>
+FROM node:12-alpine
+
+RUN mkdir -p /home/node/app/node_modules && chown -R node:node /home/node/app
+
+WORKDIR /home/node/app
+
+COPY package*.json ./
+
+USER node
+
+RUN npm install
+
+COPY --chown=node:node . .
+
+EXPOSE 3000
+
+CMD [ "node", "app.js" ]
+</code>
+
+Then build image and run container, and view your app in `http://localhost:3000`
+
+
+---
 class: inverse, center, middle
 
-<center> <img src="https://twitter.com/hashtag/Kubernetes?src=hash&amp;ref_src=twsrc%5Etfw"> </center>
+<center> <img src="https://pbs.twimg.com/media/EbSaQLpXgAAaJY8?format=jpg&name=medium"> </center>
 
+
+---
+class: inverse
+
+## What is Kubernetes
+
+Kubernetes is also known as **K8S**.
+
+The abbreviation **K8s** is derived by replacing the eight letters of “ubernete” with the digit 8.
+
+The Kubernetes Project was **open-sourced** by Google in 2014
+
+
+
+<center> <img src="https://pbs.twimg.com/media/EaBLxWGWkAMkqnB?format=jpg&name=small" width ="300"> </center>
 
 ---
 
 class: inverse
 
-## Intro 
+# What does Kubernetes do?
+
+Kubernetes is a **vendor-agnostic** container management platform that orchestrates container workloads
+
+
+It uses YAML files for example
+
+<code>
+apiVersion: v1  
+kind: Pod  
+metadata:  
+  name: site  
+  labels:  
+  app: web  
+spec:  
+  containers:  
+    - name: front-end  
+      image: nginx  
+      ports:  
+    - containerPort: 80  
+</code>
+
+
 
 
 
 ---
+class: inverse
 
+## Disadvantages of Kubernetes
 
+- Kubernetes can be an overkill for simple applications
+- Complex and steep learning curve
+- Short term decrease in productivity
+- Need to hire K8s expertise
 
-# 
-
-<center> <img src="https://pbs.twimg.com/media/EPETtRmX4AA8Utv?format=jpg&name=900x900"> </center>
-
----
-
-
-
-# 
 
 <center> <img src="https://pbs.twimg.com/media/EPETtt-WsAYPWRI?format=jpg&name=small"> </center>
----
 
-
-# slide x
-
-<center> <img src="https://pbs.twimg.com/media/EJUkDXBXYAQ14qH?format=jpg&name=900x900"> </center>
-
----
 
 
 
-#  
-and......
+---
+class: inverse
 
-https://pbs.twimg.com/tweet_video_thumb/EIbrw9rWsAAetZc?format=jpg&name=small
+## Advantages of Kubernetes
 
+- Applications are more stable  
+- Long term increase in productivity
 
 ---
 
@@ -80,7 +178,7 @@ Slides created with the `xaringan` R package
 ### Link to materials
 
 https://github.com/kimnewzealand/R-tutorials
- 
+
 
 
 
