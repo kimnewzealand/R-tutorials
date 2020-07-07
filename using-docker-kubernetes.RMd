@@ -1,5 +1,5 @@
 ---
-title: "Using Docker and Kubernetes"
+title: "Intro to Docker and Kubernetes"
 author: 'Kim Fitter '
 date: "8 July 2020"
 output:
@@ -21,17 +21,22 @@ library(xaringan)
 ```
 
 
+class: inverse, center, middle
 
+<center> <img src="https://pbs.twimg.com/media/EbSaQLpXgAAaJY8?format=jpg&name=medium" height="500"> </center>
+
+
+---
 
 
 ## What are Containers ?
 
-- Standalone executables
-- Package code, runtime, system tools, system libraries, and configs altogether
+- Packaged code, dependencies and and config
 - Share operating systems
 - Predictable
 - Repeatable 
 - Immutable
+- Solves the “but it works on my machine” problem
 
 
 <center>
@@ -43,29 +48,32 @@ library(xaringan)
 ---
 ## What is Docker?
 
-Docker* automates the development, testing and  deployment of applications inside software containers
+Docker by Docker Inc automates the development, testing and  deployment of applications inside software containers.
+
+- Docker engine is the layer on which Docker runs.
+
+- The Docker Client is the UI 
+
+- The Dockerfile is just a text file list of steps to build the image to get the container 
 
 
 
-
-
-*is an open-source project
 
 ---
 
 ## Docker Images
 
-When using Docker, a developer creates an app or service and packages it and its dependencies into a container image. 
+A Docker **image** is a pre-built environment for a certain technology or service.
 
-An **image** is a static representation of the app or service and its configuration and dependencies.
+For example official Node.js image is available at the [Docker Hub]( https://hub.docker.com/_/node/).
 
-<center> <img src="https://docs.microsoft.com/en-us/dotnet/architecture/microservices/container-docker-introduction/media/docker-containers-images-registries/taxonomy-of-docker-terms-and-concepts.png" height="500"> </center>
+<center> <img src="https://docs.microsoft.com/en-us/dotnet/architecture/microservices/container-docker-introduction/media/docker-containers-images-registries/taxonomy-of-docker-terms-and-concepts.png" height="350"> </center>
 
 ---
 
-## Run a Node.js app in Docker
+## How to Run a Node.js app using Docker
 
-Create app and a <a href="https://medium.com/faun/how-to-build-a-node-js-application-with-docker-f596fbd3a51">dockerfile</a> with the following :
+Create app and a <a href="https://medium.com/faun/how-to-build-a-node-js-application-with-docker-f596fbd3a51">Dockerfile</a>  :
 
 <code>
 FROM node:12-alpine
@@ -91,12 +99,7 @@ Then build image and run container, and view your app in `http://localhost:3000`
 
 
 ---
-class: inverse, center, middle
 
-<center> <img src="https://pbs.twimg.com/media/EbSaQLpXgAAaJY8?format=jpg&name=medium"> </center>
-
-
----
 class: inverse
 
 ## What is Kubernetes
@@ -115,28 +118,16 @@ The Kubernetes Project was **open-sourced** by Google in 2014
 
 class: inverse
 
-# What does Kubernetes do?
+## What does Kubernetes do?
 
-Kubernetes is a **vendor-agnostic** container management platform that orchestrates container workloads
+Kubernetes is a container management platform that orchestrates container workloads.
 
+- A cluster is a set of nodes (physical machines) virtually connected with each other and run containerised applications. 
+-  A master node manages the cluster and schedules the containers to run on the cluster’s nodes.
+- A pod within a node contains one or more containers
+- Specify configuration with YAML (Yet Another Markup Language) 
 
-It uses YAML files for example
-
-<code>
-apiVersion: v1  
-kind: Pod  
-metadata:  
-  name: site  
-  labels:  
-  app: web  
-spec:  
-  containers:  
-    - name: front-end  
-      image: nginx  
-      ports:  
-    - containerPort: 80  
-</code>
-
+<center> <img src="https://miro.medium.com/max/1400/1*opw2Ethwo-ebWtqijq8ZBQ.png" width="350"> </center>
 
 
 
@@ -144,26 +135,20 @@ spec:
 ---
 class: inverse
 
-## Disadvantages of Kubernetes
+## When to use Kubernetes?
 
 - Kubernetes can be an overkill for simple applications
-- Complex and steep learning curve
-- Short term decrease in productivity
+- Complex with steep learning curve
+- Short term decrease in productivity to achieve consistency
 - Need to hire K8s expertise
+- Powerful at scale
 
 
-<center> <img src="https://pbs.twimg.com/media/EPETtt-WsAYPWRI?format=jpg&name=small"> </center>
+<center> <img src="https://pbs.twimg.com/media/EPETtt-WsAYPWRI?format=jpg&name=small" width="300"> </center>
 
 
 
 
----
-class: inverse
-
-## Advantages of Kubernetes
-
-- Applications are more stable  
-- Long term increase in productivity
 
 ---
 
